@@ -166,7 +166,7 @@ function renderTweaks() {
   $('#tweak-grid').innerHTML = list.length ? list.map(t => `
     <div class="tcard glass ${tweakState(t.id) ? 'on' : ''}" data-card="${t.id}">
       <div class="tags"><span class="tag">${S.cats[t.cat].glyph} ${S.cats[t.cat].name}</span><span class="tag ${t.risk}">${t.risk} risk</span>${t.reboot ? '<span class="tag reboot">reboot</span>' : ''}${t.recommended ? '<span class="tag reco">★ recommended</span>' : ''}</div>
-      <h3>${esc(t.name)}</h3><p>${esc(t.desc)}</p>
+      <h3>${esc(t.name)}</h3><small class="muted tweak-id">ID: ${esc(t.id)}</small><p>${esc(t.desc)}</p>
       <div class="foot"><span class="lbl">${tweakState(t.id) ? 'Applied' : 'Not applied'}</span><div style="display:flex;align-items:center;gap:8px"><span class="lbl">${tweakState(t.id) ? 'Revert' : 'Activate'}</span>${toggleHTML(t)}</div></div>
     </div>`).join('') : '<div class="empty">No tweaks match.</div>';
   $('#reboot-banner').classList.toggle('hidden', !S.rebootPending);

@@ -37,3 +37,10 @@ test('PowerShell scripts are never written to disk before running elevated', () 
   assert.doesNotMatch(main, /writeFileSync\([^)]*stats-worker/);
   assert.doesNotMatch(main, /'-File'/);
 });
+
+test('tweak IDs are visible and selectable', () => {
+  const app = fs.readFileSync(path.join(root, 'src/renderer/app.js'), 'utf8');
+  assert.match(app, /<small class="muted tweak-id">ID: \$\{esc\(t\.id\)\}<\/small>/);
+  assert.match(css, /\.tcard \.tweak-id\s*\{[^}]*user-select:\s*text/);
+});
+
