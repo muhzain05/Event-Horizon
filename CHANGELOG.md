@@ -4,6 +4,9 @@ All notable changes to this project are documented here. The format follows [Kee
 
 ## [Unreleased]
 
+### Fixed
+- Respect reduced-motion preferences in the space background and page transitions, including preference changes while the app is open.
+
 ## [1.0.0] - 2026-11-06
 
 First public release.

@@ -73,6 +73,9 @@ input, select { outline: none; }
 #content { flex: 1; overflow-y: auto; padding: 26px 30px 40px; scroll-behavior: smooth; }
 #content::-webkit-scrollbar { width: 8px; } #content::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 8px; }
 .page { display: none; animation: fade .3s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .page { animation: none; }
+}
 .page.active { display: block; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 

@@ -1,5 +1,6 @@
 /* Starfield, nebula clouds and black hole background. Static layers are pre-rendered to an offscreen canvas;
-   only twinkle, accretion disk rotation and in-falling particles animate (30 fps, paused when hidden). */
+   only twinkle, accretion disk rotation and in-falling particles animate (30 fps, paused when hidden;
+   reduced-motion preferences render a still frame instead). */
 (() => {
   const canvas = document.getElementById('space');
   const ctx = canvas.getContext('2d');
@@ -9,6 +10,7 @@
   let bh = { x: 0, y: 0, r: 0 };
   let t = 0, last = 0, raf = 0;
   const FPS = 30;
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
 
@@ -142,10 +144,7 @@
     ctx.restore();
   }
 
-  function frame(now) {
-    raf = requestAnimationFrame(frame);
-    if (now - last < 1000 / FPS) return;
-    last = now; t += 1 / FPS;
+  function paint() {
     ctx.globalCompositeOperation = 'source-over';
     ctx.drawImage(staticLayer, 0, 0, W, H);
     // twinkle
@@ -157,10 +156,30 @@
     drawBlackHole();
   }
 
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(raf); else raf = requestAnimationFrame(frame);
+  function frame(now) {
+    raf = 0;
+    if (document.hidden || motion.matches) return;
+    raf = requestAnimationFrame(frame);
+    if (now - last < 1000 / FPS) return;
+    last = now; t += 1 / FPS;
+    paint();
+  }
+
+  function syncMotion() {
+    cancelAnimationFrame(raf);
+    raf = 0;
+    last = 0;
+    if (document.hidden) return;
+    if (motion.matches) paint();
+    else raf = requestAnimationFrame(frame);
+  }
+
+  motion.addEventListener('change', syncMotion);
+  document.addEventListener('visibilitychange', syncMotion);
+  window.addEventListener('resize', () => {
+    resize();
+    if (motion.matches && !document.hidden) paint();
   });
-  window.addEventListener('resize', resize);
   resize();
-  raf = requestAnimationFrame(frame);
+  syncMotion();
 })();
