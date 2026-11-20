@@ -17,7 +17,7 @@
   "devDependencies": {
     "@fontsource/inter": "^5.3.0",
     "@fontsource/orbitron": "^5.3.0",
-    "electron": "^45.2.3",
+    "electron": "^45.3.3",
     "electron-builder": "^26.18.0"
   },
   "build": {
